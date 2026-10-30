@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Caixinha Dourada</title>
+<style>
+  :root {
+    --bg: #15110a; --card: #231c11; --card2: #30271a; --text: #fbf6ea; --muted: #bfae8c;
+    --accent: #e3b341; --accent-ink: #2b1d00; --warn: #f59e0b; --line: #43381f;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.4 system-ui, -apple-system, Roboto, sans-serif; }
+  main { max-width: 560px; margin: 0 auto; padding: 16px 16px 120px; }
+  .topo { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 14px; }
+  .pill { background: var(--card); border-radius: 999px; padding: 4px 12px; }
+  .aviso { background: #422006; color: #fde68a; border-radius: 12px; padding: 10px 14px; margin-top: 12px; font-size: 14px; }
+  .info { background: var(--card); color: var(--muted); border-radius: 12px; padding: 10px 14px; margin-top: 12px; font-size: 14px; }
+  .fila { background: #3b2f12; color: #fde9b0; border-radius: 12px; padding: 10px 14px; margin-top: 12px; font-size: 14px; }
+  .hero { margin: 20px 0 8px; }
+  .hero small { color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-size: 12px; }
+  .hero h1 { margin: 2px 0 0; font-size: 34px; line-height: 1.1; }
+  .hero h2 { margin: 4px 0 0; font-size: 18px; font-weight: 500; color: var(--accent); }
+  .letras { display: flex; gap: 8px; margin: 14px 0 6px; }
+  .letras button { flex: 1; height: 40px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--muted); font-weight: 600; font-size: 16px; }
+  .letras button.ativo { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .letras button.prox:not(.ativo) { border-color: var(--accent); color: var(--text); }
+  .card { background: var(--card); border-radius: 16px; margin-top: 14px; overflow: hidden; transition: opacity .2s; }
+  .card.pronto { box-shadow: 0 0 0 2px var(--accent); }
+  .card.pronto .feito { color: var(--accent); font-weight: 600; }
+  .progresso { margin-top: 6px; color: var(--muted); font-size: 14px; }
+  .foto { position: relative; background: #fff; aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; }
+  .foto img { width: 100%; height: 100%; object-fit: contain; }
+  .foto .sem { color: #64748b; font-size: 14px; padding: 0 16px; text-align: center; }
+  .foto .dica { position: absolute; right: 8px; bottom: 8px; background: rgba(15,23,42,.75); color: #fff; font-size: 12px; padding: 2px 8px; border-radius: 999px; }
+  .corpo { padding: 14px; }
+  .nome { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+  .nome h3 { margin: 0; font-size: 18px; }
+  .tag { background: #4a3a10; color: #fde9b0; font-size: 11px; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+  .meta { color: var(--muted); font-size: 14px; margin-top: 2px; }
+  .linha { display: flex; gap: 10px; margin-top: 12px; align-items: flex-end; }
+  .campo { flex: 1; }
+  .campo label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .stepper { display: flex; align-items: center; background: var(--card2); border-radius: 12px; }
+  .stepper button { width: 44px; height: 48px; border: 0; background: transparent; color: var(--text); font-size: 22px; }
+  .stepper input { width: 100%; min-width: 0; text-align: center; }
+  input { height: 48px; border: 0; border-radius: 12px; background: var(--card2); color: var(--text); font-size: 18px; padding: 0 12px; width: 100%; }
+  input::placeholder { color: #64748b; font-size: 14px; }
+  .feito { display: flex; align-items: center; gap: 8px; margin-top: 12px; color: var(--muted); font-size: 14px; }
+  .feito input { width: 22px; height: 22px; accent-color: var(--accent); }
+  .rodape { position: fixed; left: 0; right: 0; bottom: 0; background: linear-gradient(transparent, var(--bg) 30%); padding: 24px 16px 16px; }
+  .rodape div { max-width: 560px; margin: 0 auto; display: flex; gap: 10px; }
+  .btn { height: 54px; border-radius: 14px; border: 0; font-size: 17px; font-weight: 600; }
+  .btn.prim { flex: 1; background: var(--accent); color: var(--accent-ink); }
+  .btn.sec { padding: 0 18px; background: var(--card); color: var(--text); }
+  .btn:disabled { opacity: .5; }
+  .hist { margin-top: 28px; }
+  .hist h4 { margin: 0 0 8px; color: var(--muted); font-weight: 500; font-size: 14px; }
+  .hist ul { margin: 0; padding: 0; }
+  .hist li { list-style: none; display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .hist .pul { color: var(--warn); }
+  .centro { min-height: 70vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 12px; }
+  .centro .grande { font-size: 56px; }
+  .centro .btn { flex: none; }
+  .modal { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: none; align-items: flex-end; justify-content: center; }
+  .modal.on { display: flex; }
+  .folha { background: var(--card); width: 100%; max-width: 560px; border-radius: 20px 20px 0 0; padding: 20px 16px 24px; }
+  .folha h3 { margin: 0 0 6px; }
+  .folha p { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+  .folha .acoes { display: flex; gap: 10px; margin-top: 14px; }
+  .folha .acoes .btn { flex: 1; }
+  .biset { border: 2px solid var(--accent); border-radius: 20px; padding: 12px 10px 10px; margin-top: 18px; }
+  .biset-topo { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 0 4px; }
+  .biset-topo b { color: var(--accent); font-size: 16px; white-space: nowrap; }
+  .biset-topo span { color: var(--muted); font-size: 13px; text-align: right; }
+  .biset .card { margin-top: 10px; }
+  .biset .foto { aspect-ratio: 16 / 9; }
+  .mais { text-align: center; color: var(--accent); font-weight: 700; margin: 6px 0 -4px; }
+  .num { display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); font-size: 13px; font-weight: 700; align-items: center; justify-content: center; margin-right: 6px; vertical-align: 2px; }
+  .btn.limpar { width: 100%; margin-top: 18px; background: transparent; border: 1px solid var(--line); color: #fca5a5; }
+  .versao { margin-top: 24px; text-align: center; color: #64748b; font-size: 13px; }
+  .versao a { color: var(--muted); }
+  .atualiza { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #4a3a10; color: #fdf0c8; border-radius: 12px; padding: 10px 14px; margin-top: 12px; font-size: 14px; }
+  .atualiza button { border: 0; border-radius: 10px; background: var(--accent); color: var(--accent-ink); font-weight: 700; padding: 8px 12px; font-size: 14px; }
+  .toast.ok { background: #4a3a10; color: #fdf0c8; }
+  .dica { margin-top: 8px; font-size: 13px; color: var(--muted); background: var(--card2); border-radius: 10px; padding: 8px 10px; }
+  .bloco { background: var(--card); border-radius: 16px; margin-top: 14px; padding: 4px 14px; }
+  .bloco summary { list-style: none; cursor: pointer; padding: 10px 0; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+  .bloco summary::-webkit-details-marker { display: none; }
+  .bloco summary span { color: var(--muted); font-weight: 400; font-size: 13px; }
+  .bloco[open] summary { border-bottom: 1px solid var(--line); }
+  .along { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .along:last-child { border-bottom: 0; }
+  .along .mini { flex: none; width: 96px; height: 72px; border-radius: 10px; background: #fff; overflow: hidden; display: flex; align-items: center; justify-content: center; color: #8a7a5a; font-size: 26px; }
+  .along .mini img { width: 100%; height: 100%; object-fit: contain; }
+  .along b { display: block; }
+  .along small { color: var(--accent); }
+  .along p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+  .dicaitem { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .dicaitem:last-child { border-bottom: 0; }
+  .dicaitem b { color: var(--accent); display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+  .toast { position: fixed; left: 16px; right: 16px; top: 16px; background: #7f1d1d; color: #fee2e2; padding: 12px 14px; border-radius: 12px; display: none; z-index: 10; }
+</style>
+</head>
+<body>
+<main id="app"><div class="centro"><div class="grande">🏋️</div><div>Carregando seu treino…</div></div></main>
+
+<div class="rodape" id="rodape" hidden>
+  <div>
+    <button class="btn sec" onclick="abrirPular()">Pular</button>
+    <button class="btn prim" id="salvar" onclick="salvar()">Salvar treino</button>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="folha">
+    <h3>Pular o treino <span id="mLetra"></span>?</h3>
+    <p>Fica anotado no Registro como pulado, e o app passa para o próximo treino.</p>
+    <input id="motivo" placeholder="Motivo (opcional): cansaço, viagem…">
+    <div class="acoes">
+      <button class="btn sec" onclick="fecharPular()">Cancelar</button>
+      <button class="btn prim" onclick="confirmarPular()">Pular treino</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="config.js"></script>
+<script>
+const CFG = window.APP_CONFIG || {};
+const K_SCROLL = 'treino.scroll';
+const K_ESTADO = 'treino.estado', K_FILA = 'treino.fila', K_CHAVE = 'treino.chave', K_RASCUNHO = 'treino.rascunho';
+const REPO = 'arthurbruni/caixinha-dourada';
+
+let estado = ler(K_ESTADO);
+let fila = ler(K_FILA) || [];
+// Rascunho do treino sendo preenchido: { letra, quando, campos: { c0: '42,5', r0: '8,8', f0: true, ... } }
+let rascunho = ler(K_RASCUNHO);
+let atual = rascunho ? rascunho.letra : (estado ? estado.proximo : null);
+let escolhido = !!rascunho; // o usuário já está num treino; a planilha não troca a tela
+let telaFeito = false;
+let enviando = false;
+
+function chave() { return CFG.chave || ler(K_CHAVE) || ''; }
+
+// ---------- armazenamento local ----------
+function ler(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
+function gravar(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+// ---------- conversa com a planilha ----------
+async function api(corpo) {
+  if (!CFG.url) throw new Error('App sem configuração da planilha');
+  const r = await fetch(CFG.url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(Object.assign({ chave: chave() }, corpo))
+  });
+  const j = await r.json();
+  if (!j.ok) { const err = new Error(j.erro || 'Erro na planilha'); err.chaveInvalida = /chave/i.test(j.erro || ''); throw err; }
+  return j.estado;
+}
+
+async function atualizar() {
+  if (!chave()) { telaChave(); return; }
+  try {
+    await enviarFila();
+    const e = await api({ acao: 'estado' });
+    receber(e);
+  } catch (err) {
+    if (err.chaveInvalida) { telaChave('Essa chave não foi aceita pela planilha. Confira e cole de novo.'); return; }
+    if (!estado) { telaErro('Sem conexão com a planilha. Abra o app de novo quando tiver internet.'); return; }
+  }
+  if (!telaFeito) render('manter');
+}
+
+function receber(e) {
+  estado = e;
+  gravar(K_ESTADO, e);
+  if (!atual || !escolhido) atual = e.proximo;
+}
+
+// Primeira vez: a chave da planilha fica só neste celular
+function telaChave(msg) {
+  document.getElementById('rodape').hidden = true;
+  document.getElementById('app').innerHTML = `<div class="centro"><div class="grande">🔑</div>
+    <h2 style="margin:0">Conectar à planilha</h2>
+    <div style="color:var(--muted)">${esc(msg || 'Cole a chave do app (uma vez só). Ela fica guardada só neste celular.')}</div>
+    <input id="campoChave" placeholder="Chave do app" autocapitalize="off" autocomplete="off" spellcheck="false">
+    <button class="btn prim" style="width:100%" onclick="salvarChave()">Conectar</button></div>`;
+}
+
+function salvarChave() {
+  const v = document.getElementById('campoChave').value.trim();
+  if (!v) return;
+  gravar(K_CHAVE, v);
+  document.getElementById('app').innerHTML = '<div class="centro"><div class="grande">🏋️</div><div>Conectando…</div></div>';
+  atualizar();
+}
+
+// Envia, na ordem, os treinos guardados sem internet
+async function enviarFila() {
+  if (enviando || !fila.length) return;
+  enviando = true;
+  try {
+    while (fila.length) {
+      const e = await api(fila[0]);
+      fila.shift();
+      gravar(K_FILA, fila);
+      receber(e);
+    }
+  } finally {
+    enviando = false;
+  }
+}
+
+window.aoVoltar = () => { if (estado) atualizar(); };
+window.addEventListener('online', () => atualizar());
+
+// ---------- telas ----------
+function treinoAtual() { return estado.treinos.find(t => t.letra === atual) || estado.treinos[0]; }
+function passo() { return /gl[uú]teo|quadr|posterior|perna/i.test(treinoAtual().foco) ? 2.5 : 1; }
+function fmt(n) { return n === '' || n === null || n === undefined || isNaN(n) ? '' : String(Math.round(n * 100) / 100).replace('.', ','); }
+function num(s) { s = String(s).trim().replace(',', '.'); return s === '' ? '' : Number(s); }
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function hojeIso() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function hojeDiaMes() { const d = new Date(); return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0'); }
+
+// modo: 'topo' (trocou de treino), 'manter' (só atualizou os dados), 'restaurar' (app acabou de abrir)
+function render(modo) {
+  const yAntes = window.scrollY;
+  telaFeito = false;
+  const t = treinoAtual();
+  atual = t.letra;
+  const e = estado;
+  let topo = `<div class="topo"><span class="pill">${e.semana >= 1 ? 'Semana ' + Math.min(e.semana, e.totalSemanas) + ' de ' + e.totalSemanas : 'Antes do ciclo'}</span><span>${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: '2-digit' })}</span></div>`;
+  if (fila.length) topo += `<div class="fila">${fila.length === 1 ? '1 treino guardado' : fila.length + ' treinos guardados'} no celular. Vai para a planilha quando tiver internet.</div>`;
+  if (e.semana < 1) topo += `<div class="info">O ciclo começa em ${e.inicioCiclo}.</div>`;
+  if (e.semana > e.totalSemanas) topo += `<div class="info">O ciclo terminou. Hora de montar o próximo na planilha.</div>`;
+  if (e.semanaLeve) topo += `<div class="aviso"><b>Semana leve:</b> mesma técnica, carga 20 a 30% menor.</div>`;
+  if (e.jaTreinouHoje) topo += `<div class="info">Você já registrou um treino hoje.</div>`;
+
+  const letras = e.treinos.map(x => `<button class="${x.letra === atual ? 'ativo' : ''} ${x.letra === e.proximo ? 'prox' : ''}" onclick="trocar('${x.letra}')">${x.letra}</button>`).join('');
+
+  const cartao = (x, i, ordem) => {
+    const foto = x.foto
+      ? `<div class="foto" onclick="virar(${i})"><img id="img${i}" src="${esc(x.foto)}" loading="lazy" alt="${esc(x.nome)}" onerror="this.parentNode.innerHTML='<span class=sem>Foto indisponível sem internet</span>'">${/\/0\.jpg$/.test(x.foto) ? '<span class="dica">toque para ver o movimento</span>' : ''}</div>`
+      : `<div class="foto"><span class="sem">Sem foto (adicione na aba Fotos do app)</span></div>`;
+    return `<div class="card" id="card${i}">${foto}<div class="corpo">
+      <div class="nome"><h3>${ordem ? '<span class="num">' + ordem + '</span>' : ''}${esc(nomeCurto(x.nome))}</h3>${x.principal ? '<span class="tag">Principal</span>' : ''}</div>
+      <div class="meta">${esc(x.series)} séries × ${esc(x.reps)} reps${ordem ? '' : ' · descanso ' + esc(x.descanso)}</div>
+      ${x.dica ? '<div class="dica">💡 ' + esc(x.dica) + '</div>' : ''}
+      <div class="linha">
+        <div class="campo"><label>Carga (kg)</label><div class="stepper">
+          <button onclick="somar(${i},-1)">−</button>
+          <input id="c${i}" inputmode="decimal" value="${fmt(x.cargaAtual)}" placeholder="—">
+          <button onclick="somar(${i},1)">+</button></div></div>
+        <div class="campo"><label>Reps feitas</label>
+          <input id="r${i}" inputmode="numeric" placeholder="${x.ultimasReps ? 'última: ' + esc(x.ultimasReps) : 'ex.: 8,8,7'}"></div>
+      </div>
+      <label class="feito"><input type="checkbox" id="f${i}" onchange="marcarFeito(${i})"> Feito</label>
+    </div></div>`;
+  };
+
+  // Dois exercícios "Biset:" seguidos viram um bloco: um logo após o outro, descanso só depois do par
+  let cards = '', nBiset = 0;
+  for (let i = 0; i < t.exercicios.length; i++) {
+    const x = t.exercicios[i], y = t.exercicios[i + 1];
+    if (ehBiset(x) && y && ehBiset(y)) {
+      nBiset++;
+      cards += `<div class="biset"><div class="biset-topo"><b>Biset ${nBiset}</b>
+        <span>${esc(x.series)} rodadas · sem descanso entre os dois · descanso ${esc(y.descanso)} depois do par</span></div>
+        ${cartao(x, i, 1)}<div class="mais">+ emende direto</div>${cartao(y, i + 1, 2)}</div>`;
+      i++;
+    } else {
+      cards += cartao(x, i, 0);
+    }
+  }
+
+  const hist = e.historico && e.historico.length ? `<div class="hist"><h4>Últimos treinos</h4><ul>${e.historico.map(h =>
+    `<li><span>${quando(h.dia)} · Treino ${h.treino}</span>${h.pulado ? '<span class="pul">Pulado</span>' : `<span>${h.exercicios} exercícios</span>`}</li>`).join('')}</ul></div>` : '';
+
+  const retomado = rascunho && rascunho.letra === t.letra;
+  const avisoRascunho = retomado ? `<div class="info">Continuando o que você preencheu ${esc(rascunho.quando)}. Se for outro treino, use <b>Limpar tudo</b> no fim da página.</div>` : '';
+
+  document.getElementById('app').innerHTML = `${topo}${bannerAtualizacao()}
+    <div class="hero"><small>${atual === e.proximo ? 'Treino de hoje' : 'Treino escolhido'}</small>
+      <h1>Treino ${t.letra}</h1><h2>Foco: ${esc(t.foco)}</h2><div class="progresso" id="progresso"></div></div>
+    <div class="letras">${letras}</div>${avisoRascunho}${blocoAlongamentos('Antes de todo treino', '🧘 Antes de começar: alongamentos', false)}${cards}
+    <button class="btn limpar" onclick="limparTudo()">Limpar tudo</button>
+    ${blocoAlongamentos('Depois do jiu ou em casa', '🌙 Depois do jiu ou em casa', false)}${blocoDicas()}${hist}
+    <div class="versao">Caixinha Dourada · versão ${versaoApp()} · <a href="#" onclick="procurarAtualizacao(true);return false">Procurar atualização</a></div>`;
+  if (retomado) aplicarRascunho();
+  atualizarProgresso();
+  document.getElementById('rodape').hidden = false;
+  const salvo = ler(K_SCROLL);
+  const y = modo === 'manter' ? yAntes
+    : modo === 'restaurar' && salvo && salvo.letra === t.letra ? salvo.y : 0;
+  window.scrollTo(0, y);
+}
+
+// Posição da tela fica guardada para o app reabrir no mesmo exercício
+let timerScroll = null;
+window.addEventListener('scroll', () => {
+  if (telaFeito || !estado) return;
+  clearTimeout(timerScroll);
+  timerScroll = setTimeout(() => gravar(K_SCROLL, { letra: atual, y: Math.round(window.scrollY) }), 300);
+});
+
+function marcarFeito(i) {
+  const f = document.getElementById('f' + i);
+  const card = document.getElementById('card' + i);
+  if (card) card.classList.toggle('pronto', f.checked);
+  atualizarProgresso();
+}
+
+function atualizarProgresso() {
+  const caixas = [...document.querySelectorAll('input[type=checkbox][id^="f"]')];
+  const el = document.getElementById('progresso');
+  if (el && caixas.length) el.textContent = caixas.filter(c => c.checked).length + ' de ' + caixas.length + ' exercícios feitos';
+}
+
+// ---------- alongamentos e dicas (vêm das abas Mobilidade e Dicas do app) ----------
+function blocoAlongamentos(quando, titulo, aberto) {
+  const lista = (estado.mobilidade || []).filter(m => m.quando.trim().toLowerCase() === quando.toLowerCase());
+  if (!lista.length) return '';
+  const itens = lista.map(m => `<div class="along">
+      <div class="mini">${m.foto ? '<img src="' + esc(m.foto) + '" loading="lazy" alt="" onerror="this.parentNode.textContent=\'🧘\'">' : '🧘'}</div>
+      <div><b>${esc(m.nome)}</b><small>${esc(m.tempo)}</small><p>${esc(m.como)}</p></div></div>`).join('');
+  return `<details class="bloco"${aberto ? ' open' : ''}><summary>${titulo}<span>${lista.length} itens</span></summary>${itens}</details>`;
+}
+
+function blocoDicas() {
+  const d = estado.dicas || [];
+  if (!d.length) return '';
+  return `<details class="bloco"><summary>✨ Dicas e cuidados<span>${d.length} dicas</span></summary>${d.map(x =>
+    `<div class="dicaitem"><b>${esc(x.tema)}</b>${esc(x.dica)}</div>`).join('')}</details>`;
+}
+
+// ---------- rascunho: o que já foi preenchido sobrevive a fechar o app ----------
+function salvarRascunho() {
+  if (!estado || telaFeito) return;
+  const campos = {};
+  document.querySelectorAll('[id^="c"],[id^="r"],[id^="f"]').forEach(el => {
+    if (!/^[crf]\d+$/.test(el.id)) return;
+    campos[el.id] = el.type === 'checkbox' ? el.checked : el.value;
+  });
+  const d = new Date();
+  rascunho = { letra: atual, quando: 'em ' + hojeDiaMes() + ' às ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'), campos: campos };
+  escolhido = true;
+  gravar(K_RASCUNHO, rascunho);
+}
+
+function aplicarRascunho() {
+  Object.entries(rascunho.campos || {}).forEach(([id, v]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el.type === 'checkbox') {
+      el.checked = !!v;
+      const card = document.getElementById('card' + id.slice(1));
+      if (card) card.classList.toggle('pronto', el.checked);
+    } else {
+      el.value = v;
+    }
+  });
+}
+
+function apagarRascunho() { rascunho = null; escolhido = false; try { localStorage.removeItem(K_RASCUNHO); } catch (e) {} }
+
+function limparTudo() {
+  apagarRascunho();
+  atual = estado.proximo; // volta para o treino do dia
+  render();
+  mostrarAviso('Tudo limpo: cargas voltaram para as atuais e as reps ficaram em branco.');
+}
+
+// Preencher as reps já marca o exercício como feito
+document.addEventListener('input', ev => {
+  if (!/^[cr]\d+$/.test(ev.target.id)) return;
+  const i = ev.target.id.slice(1);
+  const f = document.getElementById('f' + i);
+  if (ev.target.id[0] === 'r' && ev.target.value.trim() && f && !f.checked) { f.checked = true; marcarFeito(i); }
+  salvarRascunho();
+});
+document.addEventListener('change', ev => { if (/^[crf]\d+$/.test(ev.target.id)) salvarRascunho(); });
+
+// "22/10" vira "qua, 22/10 · ontem"
+function quando(dia) {
+  const m = /^(\d{2})\/(\d{2})$/.exec(dia || '');
+  if (!m) return 'Sem data';
+  const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+  let d = new Date(hoje.getFullYear(), Number(m[2]) - 1, Number(m[1]));
+  if (d > hoje) d = new Date(hoje.getFullYear() - 1, Number(m[2]) - 1, Number(m[1]));
+  const dias = Math.round((hoje - d) / 86400000);
+  const semana = d.toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '');
+  const rel = dias === 0 ? 'hoje' : dias === 1 ? 'ontem' : 'há ' + dias + ' dias';
+  return semana + ', ' + dia + ' · ' + rel;
+}
+
+function telaErro(msg) {
+  document.getElementById('rodape').hidden = true;
+  document.getElementById('app').innerHTML = `<div class="centro"><div class="grande">📶</div><div>${esc(msg)}</div>
+    <button class="btn prim" style="width:100%" onclick="atualizar()">Tentar de novo</button></div>`;
+}
+
+function ehBiset(x) { return /^biset\b/i.test(x.nome); }
+function nomeCurto(nome) { return nome.replace(/^biset\s*:?\s*/i, ''); }
+
+function trocar(l) { atual = l; escolhido = true; render(); }
+
+function somar(i, dir) {
+  const el = document.getElementById('c' + i);
+  const v = num(el.value);
+  el.value = fmt(Math.max(0, (v === '' ? 0 : v) + dir * passo()));
+  salvarRascunho();
+}
+
+function virar(i) {
+  const img = document.getElementById('img' + i);
+  if (!img || !/\/[01]\.jpg$/.test(img.src)) return;
+  img.src = img.src.replace(/\/([01])\.jpg$/, (m, n) => '/' + (n === '0' ? '1' : '0') + '.jpg');
+}
+
+// ---------- salvar e pular ----------
+function salvar() {
+  const t = treinoAtual();
+  const itens = [];
+  t.exercicios.forEach((x, i) => {
+    if (!document.getElementById('f' + i).checked) return;
+    itens.push({ nome: x.nome, carga: num(document.getElementById('c' + i).value), reps: document.getElementById('r' + i).value.trim() });
+  });
+  if (!itens.length) { mostrarErro('Marque como Feito os exercícios que você fez (ou preencha as reps), ou use Pular.'); return; }
+  registrar({ acao: 'salvar', letra: t.letra, itens: itens, data: hojeIso() },
+    `Treino ${t.letra} salvo`, `${itens.length} de ${t.exercicios.length} exercícios anotados.`);
+}
+
+function abrirPular() { document.getElementById('mLetra').textContent = atual; document.getElementById('motivo').value = ''; document.getElementById('modal').classList.add('on'); }
+function fecharPular() { document.getElementById('modal').classList.remove('on'); }
+function confirmarPular() {
+  const motivo = document.getElementById('motivo').value.trim();
+  fecharPular();
+  registrar({ acao: 'pular', letra: atual, motivo: motivo, data: hojeIso() },
+    `Treino ${atual} pulado`, 'Ficou anotado no Registro.');
+}
+
+// Tenta enviar na hora; sem internet, guarda no celular e mostra como feito
+async function registrar(pedido, titulo, texto) {
+  ocupado(true);
+  apagarRascunho();
+  fila.push(pedido);
+  gravar(K_FILA, fila);
+  let online = true;
+  try { await enviarFila(); } catch (err) { online = false; }
+  if (!online) aplicarLocal(pedido);
+  ocupado(false);
+  feito(titulo, online ? texto + ' Já está na planilha.' : texto + ' Sem internet: fica guardado no celular e vai para a planilha sozinho depois.');
+}
+
+// Atualiza a tela sem a planilha: avança o treino e põe no histórico
+function aplicarLocal(p) {
+  const letras = estado.treinos.map(t => t.letra);
+  estado.proximo = letras[(letras.indexOf(p.letra) + 1) % letras.length];
+  estado.jaTreinouHoje = true;
+  if (p.acao === 'salvar') {
+    const t = estado.treinos.find(x => x.letra === p.letra);
+    p.itens.forEach(i => {
+      const ex = t.exercicios.find(x => x.nome === i.nome);
+      if (!ex) return;
+      if (i.carga !== '') ex.cargaAtual = i.carga;
+      if (i.reps) ex.ultimasReps = i.reps;
+    });
+  }
+  estado.historico = [{ treino: p.letra, dia: hojeDiaMes(), pulado: p.acao === 'pular', exercicios: p.acao === 'salvar' ? p.itens.length : 0 }]
+    .concat(estado.historico || []).slice(0, 8);
+  gravar(K_ESTADO, estado);
+}
+
+function feito(titulo, texto) {
+  telaFeito = true;
+  atual = estado.proximo;
+  const prox = treinoAtual();
+  document.getElementById('rodape').hidden = true;
+  document.getElementById('app').innerHTML = `<div class="centro"><div class="grande">✅</div>
+    <h1 style="margin:0">${esc(titulo)}</h1><div style="color:var(--muted)">${esc(texto)}</div>
+    <div class="info" style="width:100%">Próximo: <b>Treino ${prox.letra}</b> · ${esc(prox.foco)}</div>
+    <button class="btn prim" style="width:100%" onclick="render()">Ver próximo treino</button></div>`;
+  window.scrollTo(0, 0);
+}
+
+// Botão voltar do Android: fecha o painel de pular ou sai da tela de sucesso
+window.voltar = () => {
+  if (document.getElementById('modal').classList.contains('on')) { fecharPular(); return true; }
+  if (telaFeito) { render(); return true; }
+  return false;
+};
+
+function ocupado(sim) { const b = document.getElementById('salvar'); b.disabled = sim; b.textContent = sim ? 'Salvando…' : 'Salvar treino'; }
+function mostrarErro(msg) { toast(msg, false); }
+function mostrarAviso(msg) { toast(msg, true); }
+function toast(msg, ok) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.toggle('ok', ok); t.style.display = 'block'; clearTimeout(t._h); t._h = setTimeout(() => t.style.display = 'none', 4000); }
+
+// ---------- atualização do app (releases do GitHub) ----------
+let novaVersao = null; // { numero, url }
+
+function versaoApp() { try { return window.Android ? Android.versao() : 0; } catch (e) { return 0; } }
+
+function bannerAtualizacao() {
+  if (!novaVersao) return '';
+  return `<div class="atualiza"><span>Nova versão do app (${novaVersao.numero}) disponível.</span><button id="btnAtualizar" onclick="baixarAtualizacao()">Atualizar app</button></div>`;
+}
+
+async function procurarAtualizacao(manual) {
+  try {
+    const r = await fetch('https://api.github.com/repos/' + REPO + '/releases/latest', { cache: 'no-store' });
+    if (!r.ok) throw new Error('GitHub respondeu ' + r.status);
+    const rel = await r.json();
+    const numero = Number(String(rel.tag_name || '').replace(/\D/g, ''));
+    const apk = (rel.assets || []).find(a => /\.apk$/i.test(a.name));
+    if (apk && numero > versaoApp()) {
+      novaVersao = { numero: numero, url: apk.browser_download_url };
+      if (!telaFeito && estado) render('manter');
+      if (manual) mostrarAviso('Tem versão nova: toque em Atualizar app.');
+    } else if (manual) {
+      mostrarAviso('Você já está na versão mais nova.');
+    }
+  } catch (err) {
+    if (manual) mostrarErro('Não deu para procurar atualização agora.');
+  }
+}
+
+function baixarAtualizacao() {
+  if (!window.Android || !novaVersao) return;
+  const b = document.getElementById('btnAtualizar');
+  if (b) { b.disabled = true; b.textContent = 'Baixando…'; }
+  Android.atualizar(novaVersao.url);
+}
+
+// Chamados pelo Android durante o download
+window.progressoAtualizacao = pct => { const b = document.getElementById('btnAtualizar'); if (b) b.textContent = 'Baixando ' + pct + '%'; };
+window.fimAtualizacao = msg => {
+  const b = document.getElementById('btnAtualizar');
+  if (b) { b.disabled = false; b.textContent = 'Atualizar app'; }
+  if (msg) mostrarAviso(msg);
+};
+
+// Abre na hora com o que estava guardado e depois atualiza pela planilha
+if (estado && chave()) render('restaurar');
+atualizar();
+procurarAtualizacao(false);
+</script>
+</body>
+</html>

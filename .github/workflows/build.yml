@@ -1,0 +1,56 @@
+name: Gerar APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      # Só o endereço da planilha vai no APK; a chave é colada no celular
+      - name: Configuração da planilha
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+        run: |
+          printf 'window.APP_CONFIG = { url: "%s" };\n' "$APP_URL" > app/src/main/assets/config.js
+
+      - name: Chave de assinatura
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_B64 }}
+        run: echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/treino.p12"
+
+      - name: Compilar
+        env:
+          KEYSTORE_FILE: ${{ runner.temp }}/treino.p12
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+        run: gradle assembleRelease --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: treino-apk
+          path: app/build/outputs/apk/release/app-release.apk
+
+      # O botão "Atualizar app" procura a release mais nova
+      - name: Publicar versão
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NOTAS: ${{ github.event.head_commit.message }}
+        run: |
+          cp app/build/outputs/apk/release/app-release.apk Treino.apk
+          gh release create "v${{ github.run_number }}" Treino.apk --title "Versão ${{ github.run_number }}" --notes "${NOTAS:-Nova versão}"
