@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <!-- Bird dog: em quatro apoios, estica braço e perna opostos e volta -->
+  <rect width="400" height="300" fill="#ffffff"/>
+  <rect x="20" y="252" width="360" height="8" rx="4" fill="#e2e8f0"/>
+  <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- perna de apoio (lado de trás) -->
+    <path d="M150 172 L150 250 L95 250" stroke="#94a3b8" stroke-width="16"/>
+    <!-- braço de apoio (lado de trás) -->
+    <path d="M270 172 L270 250" stroke="#94a3b8" stroke-width="14"/>
+    <!-- tronco -->
+    <path d="M150 172 L270 172" stroke="#334155" stroke-width="26"/>
+    <!-- cabeça e rabo de cavalo -->
+    <circle cx="302" cy="160" r="19" fill="#334155" stroke="none"/>
+    <path d="M286 150 C272 146 268 160 276 170" stroke="#334155" stroke-width="7"/>
+    <!-- perna que estica (verde) -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" values="0 150 172; 90 150 172; 90 150 172; 0 150 172; 0 150 172" keyTimes="0; 0.3; 0.6; 0.9; 1" dur="4s" repeatCount="indefinite"/>
+      <path d="M150 172 L150 250" stroke="#22c55e" stroke-width="16"/>
+      <g>
+        <animateTransform attributeName="transform" type="rotate" values="0 150 250; -90 150 250; -90 150 250; 0 150 250; 0 150 250" keyTimes="0; 0.3; 0.6; 0.9; 1" dur="4s" repeatCount="indefinite"/>
+        <path d="M150 250 L95 250" stroke="#22c55e" stroke-width="14"/>
+      </g>
+    </g>
+    <!-- braço que estica (verde) -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" values="0 270 172; -90 270 172; -90 270 172; 0 270 172; 0 270 172" keyTimes="0; 0.3; 0.6; 0.9; 1" dur="4s" repeatCount="indefinite"/>
+      <path d="M270 172 L270 250" stroke="#22c55e" stroke-width="13"/>
+    </g>
+  </g>
+</svg>

@@ -3,6 +3,9 @@ name: Gerar APK
 on:
   push:
     branches: [main]
+    # imagens das fotos não geram versão nova do app
+    paths-ignore:
+      - "imagens/**"
   workflow_dispatch:
 
 permissions:

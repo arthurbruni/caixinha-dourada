@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <!-- Alongamento de peitoral na porta: antebraço apoiado no batente, passo à frente até o peito abrir -->
+  <rect width="400" height="300" fill="#ffffff"/>
+  <rect x="20" y="252" width="360" height="8" rx="4" fill="#e2e8f0"/>
+  <!-- batente da porta -->
+  <rect x="136" y="30" width="16" height="222" rx="3" fill="#cbd5e1"/>
+  <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- corpo que dá o passo à frente -->
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="0 0; 26 0; 26 0; 0 0; 0 0" keyTimes="0; 0.35; 0.65; 0.95; 1" dur="5s" repeatCount="indefinite"/>
+      <!-- perna de trás e perna da frente -->
+      <path d="M196 170 L186 250" stroke="#94a3b8" stroke-width="16"/>
+      <path d="M196 170 L214 250" stroke="#334155" stroke-width="16"/>
+      <!-- tronco -->
+      <path d="M196 170 L200 92" stroke="#334155" stroke-width="26"/>
+      <!-- cabeça e rabo de cavalo -->
+      <circle cx="206" cy="64" r="19" fill="#334155" stroke="none"/>
+      <path d="M190 56 C176 54 174 70 182 80" stroke="#334155" stroke-width="7"/>
+      <!-- outro braço solto -->
+      <path d="M200 100 L214 150" stroke="#94a3b8" stroke-width="11"/>
+    </g>
+    <!-- braço apoiado no batente: cotovelo e mão ficam parados, o ombro vai à frente -->
+    <path stroke="#22c55e" stroke-width="13" d="M200 102 L150 104 L150 58">
+      <animate attributeName="d" values="M200 102 L150 104 L150 58; M226 102 L150 104 L150 58; M226 102 L150 104 L150 58; M200 102 L150 104 L150 58; M200 102 L150 104 L150 58" keyTimes="0; 0.35; 0.65; 0.95; 1" dur="5s" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>
