@@ -6,8 +6,8 @@
 <title>Caixinha Dourada</title>
 <style>
   :root {
-    --bg: #15110a; --card: #231c11; --card2: #30271a; --text: #fbf6ea; --muted: #bfae8c;
-    --accent: #e3b341; --accent-ink: #2b1d00; --warn: #f59e0b; --line: #43381f;
+    --bg: #0f172a; --card: #1e293b; --card2: #273449; --text: #f1f5f9; --muted: #94a3b8;
+    --accent: #22c55e; --accent-ink: #052e16; --warn: #f59e0b; --line: #334155;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.4 system-ui, -apple-system, Roboto, sans-serif; }
@@ -16,7 +16,7 @@
   .pill { background: var(--card); border-radius: 999px; padding: 4px 12px; }
   .aviso { background: #422006; color: #fde68a; border-radius: 12px; padding: 10px 14px; margin-top: 12px; font-size: 14px; }
   .info { background: var(--card); color: var(--muted); border-radius: 12px; padding: 10px 14px; margin-top: 12px; font-size: 14px; }
-  .fila { background: #3b2f12; color: #fde9b0; border-radius: 12px; padding: 10px 14px; margin-top: 12px; font-size: 14px; }
+  .fila { background: #1e3a8a; color: #dbeafe; border-radius: 12px; padding: 10px 14px; margin-top: 12px; font-size: 14px; }
   .hero { margin: 20px 0 8px; }
   .hero small { color: var(--muted); text-transform: uppercase; letter-spacing: .08em; font-size: 12px; }
   .hero h1 { margin: 2px 0 0; font-size: 34px; line-height: 1.1; }
@@ -36,7 +36,7 @@
   .corpo { padding: 14px; }
   .nome { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
   .nome h3 { margin: 0; font-size: 18px; }
-  .tag { background: #4a3a10; color: #fde9b0; font-size: 11px; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+  .tag { background: #14532d; color: #bbf7d0; font-size: 11px; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
   .meta { color: var(--muted); font-size: 14px; margin-top: 2px; }
   .linha { display: flex; gap: 10px; margin-top: 12px; align-items: flex-end; }
   .campo { flex: 1; }
@@ -80,22 +80,32 @@
   .btn.limpar { width: 100%; margin-top: 18px; background: transparent; border: 1px solid var(--line); color: #fca5a5; }
   .versao { margin-top: 24px; text-align: center; color: #64748b; font-size: 13px; }
   .versao a { color: var(--muted); }
-  .atualiza { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #4a3a10; color: #fdf0c8; border-radius: 12px; padding: 10px 14px; margin-top: 12px; font-size: 14px; }
+  .atualiza { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #14532d; color: #dcfce7; border-radius: 12px; padding: 10px 14px; margin-top: 12px; font-size: 14px; }
   .atualiza button { border: 0; border-radius: 10px; background: var(--accent); color: var(--accent-ink); font-weight: 700; padding: 8px 12px; font-size: 14px; }
-  .toast.ok { background: #4a3a10; color: #fdf0c8; }
+  .toast.ok { background: #14532d; color: #dcfce7; }
   .dica { margin-top: 8px; font-size: 13px; color: var(--muted); background: var(--card2); border-radius: 10px; padding: 8px 10px; }
-  .bloco { background: var(--card); border-radius: 16px; margin-top: 14px; padding: 4px 14px; }
-  .bloco summary { list-style: none; cursor: pointer; padding: 10px 0; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+  .bloco { background: var(--card); border-radius: 16px; margin-top: 14px; padding: 4px 14px 10px; }
+  .bloco summary { list-style: none; cursor: pointer; padding: 10px 0 6px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
   .bloco summary::-webkit-details-marker { display: none; }
-  .bloco summary span { color: var(--muted); font-weight: 400; font-size: 13px; }
-  .bloco[open] summary { border-bottom: 1px solid var(--line); }
-  .along { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
-  .along:last-child { border-bottom: 0; }
-  .along .mini { flex: none; width: 96px; height: 72px; border-radius: 10px; background: #fff; overflow: hidden; display: flex; align-items: center; justify-content: center; color: #8a7a5a; font-size: 26px; }
-  .along .mini img { width: 100%; height: 100%; object-fit: contain; }
-  .along b { display: block; }
-  .along small { color: var(--accent); }
-  .along p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+  .bloco summary span { color: var(--muted); font-weight: 400; font-size: 13px; white-space: nowrap; }
+  .bloco.completo summary span { color: var(--accent); font-weight: 600; }
+  .barra { height: 4px; background: var(--card2); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+  .barra i { display: block; height: 100%; background: var(--accent); transition: width .3s; }
+  .carrossel { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px 2px 6px; }
+  .carrossel::-webkit-scrollbar { display: none; }
+  .slide { flex: 0 0 86%; scroll-snap-align: center; background: var(--card2); border-radius: 14px; overflow: hidden; transition: box-shadow .2s; }
+  .slide.pronto { box-shadow: 0 0 0 2px var(--accent); }
+  .slide .foto { aspect-ratio: 16 / 10; }
+  .slide .corpo { padding: 12px; }
+  .slide h3 { margin: 0; font-size: 16px; }
+  .slide .meta { color: var(--accent); }
+  .slide p { margin: 6px 0 0; font-size: 13px; color: var(--muted); }
+  .slide .feito { margin-top: 10px; }
+  .slide.pronto .feito { color: var(--accent); font-weight: 600; }
+  .pontos { display: flex; justify-content: center; gap: 6px; padding: 4px 0 2px; }
+  .pontos b { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
+  .pontos b.ok { background: var(--accent); }
+  .pontos b.atual { outline: 2px solid var(--muted); outline-offset: 1px; }
   .dicaitem { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
   .dicaitem:last-child { border-bottom: 0; }
   .dicaitem b { color: var(--accent); display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
@@ -286,12 +296,13 @@ function render(modo) {
   document.getElementById('app').innerHTML = `${topo}${bannerAtualizacao()}
     <div class="hero"><small>${atual === e.proximo ? 'Treino de hoje' : 'Treino escolhido'}</small>
       <h1>Treino ${t.letra}</h1><h2>Foco: ${esc(t.foco)}</h2><div class="progresso" id="progresso"></div></div>
-    <div class="letras">${letras}</div>${avisoRascunho}${blocoAlongamentos('Antes de todo treino', '🧘 Antes de começar: alongamentos', false)}${cards}
+    <div class="letras">${letras}</div>${avisoRascunho}${blocoAlongamentos('Antes de todo treino', '🧘 Alongamentos antes do treino')}${cards}
     <button class="btn limpar" onclick="limparTudo()">Limpar tudo</button>
-    ${blocoAlongamentos('Depois do jiu ou em casa', '🌙 Depois do jiu ou em casa', false)}${blocoDicas()}${hist}
+    ${blocoAlongamentos('Depois do jiu ou em casa', '🌙 Depois do jiu ou em casa')}${blocoDicas()}${hist}
     <div class="versao">Caixinha Dourada · versão ${versaoApp()} · <a href="#" onclick="procurarAtualizacao(true);return false">Procurar atualização</a></div>`;
   if (retomado) aplicarRascunho();
   atualizarProgresso();
+  document.querySelectorAll('.bloco[data-quando]').forEach(b => atualizarBloco(b, false));
   document.getElementById('rodape').hidden = false;
   const salvo = ler(K_SCROLL);
   const y = modo === 'manter' ? yAntes
@@ -320,14 +331,59 @@ function atualizarProgresso() {
   if (el && caixas.length) el.textContent = caixas.filter(c => c.checked).length + ' de ' + caixas.length + ' exercícios feitos';
 }
 
-// ---------- alongamentos e dicas (vêm das abas Mobilidade e Dicas do app) ----------
-function blocoAlongamentos(quando, titulo, aberto) {
-  const lista = (estado.mobilidade || []).filter(m => m.quando.trim().toLowerCase() === quando.toLowerCase());
-  if (!lista.length) return '';
-  const itens = lista.map(m => `<div class="along">
-      <div class="mini">${m.foto ? '<img src="' + esc(m.foto) + '" loading="lazy" alt="" onerror="this.parentNode.textContent=\'🧘\'">' : '🧘'}</div>
-      <div><b>${esc(m.nome)}</b><small>${esc(m.tempo)}</small><p>${esc(m.como)}</p></div></div>`).join('');
-  return `<details class="bloco"${aberto ? ' open' : ''}><summary>${titulo}<span>${lista.length} itens</span></summary>${itens}</details>`;
+// ---------- alongamentos em carrossel (aba Mobilidade) ----------
+// Cada alongamento é um cartão como os exercícios: foto que vira ao tocar e "Feito".
+// Um por vez na tela; ao marcar Feito, passa sozinho para o próximo.
+function blocoAlongamentos(quando, titulo) {
+  const todos = estado.mobilidade || [];
+  const idx = todos.map((m, i) => i).filter(i => todos[i].quando.trim().toLowerCase() === quando.toLowerCase());
+  if (!idx.length) return '';
+  const slides = idx.map(i => {
+    const m = todos[i];
+    const foto = m.foto
+      ? `<div class="foto" onclick="virar('mimg${i}')"><img id="mimg${i}" src="${esc(m.foto)}" loading="lazy" alt="${esc(m.nome)}" onerror="this.parentNode.innerHTML='<span class=sem>Foto indisponível sem internet</span>'">${/\/0\.jpg$/.test(m.foto) ? '<span class="dica">toque para ver o movimento</span>' : ''}</div>`
+      : '<div class="foto"><span class="sem">🧘</span></div>';
+    return `<div class="slide" id="slide${i}">${foto}<div class="corpo">
+      <h3>${esc(m.nome)}</h3><div class="meta">${esc(m.tempo)}</div><p>${esc(m.como)}</p>
+      <label class="feito"><input type="checkbox" id="m${i}" onchange="marcarAlongamento(${i})"> Feito</label></div></div>`;
+  }).join('');
+  const pontos = idx.map(i => `<b data-i="${i}"></b>`).join('');
+  return `<details class="bloco" data-quando="${esc(quando)}" open><summary>${titulo}<span class="contagem"></span></summary>
+    <div class="barra"><i></i></div><div class="carrossel" onscroll="marcarPontoAtual(this)">${slides}</div><div class="pontos">${pontos}</div></details>`;
+}
+
+function marcarAlongamento(i) {
+  const slide = document.getElementById('slide' + i);
+  const marcado = document.getElementById('m' + i).checked;
+  slide.classList.toggle('pronto', marcado);
+  const bloco = slide.closest('.bloco');
+  if (marcado) {
+    // vai para o próximo que ainda não foi feito
+    const prox = [...bloco.querySelectorAll('.slide')].find(s => !s.classList.contains('pronto'));
+    if (prox) bloco.querySelector('.carrossel').scrollTo({ left: prox.offsetLeft - 12, behavior: 'smooth' });
+  }
+  atualizarBloco(bloco, true);
+}
+
+// Atualiza contagem, barra e pontos; fecha o bloco quando tudo estiver feito
+function atualizarBloco(bloco, podeFechar) {
+  const caixas = [...bloco.querySelectorAll('input[type=checkbox]')];
+  const feitos = caixas.filter(c => c.checked).length;
+  const completo = feitos === caixas.length;
+  bloco.querySelector('.contagem').textContent = completo ? '✓ todos feitos' : feitos + ' de ' + caixas.length + ' feitos';
+  bloco.querySelector('.barra i').style.width = (100 * feitos / caixas.length) + '%';
+  bloco.classList.toggle('completo', completo);
+  bloco.querySelectorAll('.pontos b').forEach(p => p.classList.toggle('ok', document.getElementById('m' + p.dataset.i).checked));
+  if (completo) bloco.open = false;
+  else if (!podeFechar && feitos === 0 && bloco.dataset.quando !== 'Antes de todo treino') bloco.open = false;
+  marcarPontoAtual(bloco.querySelector('.carrossel'));
+}
+
+function marcarPontoAtual(car) {
+  const slides = [...car.querySelectorAll('.slide')];
+  if (!slides.length) return;
+  const n = Math.round(car.scrollLeft / (slides[0].offsetWidth + 10));
+  car.parentNode.querySelectorAll('.pontos b').forEach((p, k) => p.classList.toggle('atual', k === n));
 }
 
 function blocoDicas() {
@@ -341,8 +397,8 @@ function blocoDicas() {
 function salvarRascunho() {
   if (!estado || telaFeito) return;
   const campos = {};
-  document.querySelectorAll('[id^="c"],[id^="r"],[id^="f"]').forEach(el => {
-    if (!/^[crf]\d+$/.test(el.id)) return;
+  document.querySelectorAll('[id^="c"],[id^="r"],[id^="f"],[id^="m"]').forEach(el => {
+    if (!/^[crfm]\d+$/.test(el.id)) return;
     campos[el.id] = el.type === 'checkbox' ? el.checked : el.value;
   });
   const d = new Date();
@@ -357,7 +413,7 @@ function aplicarRascunho() {
     if (!el) return;
     if (el.type === 'checkbox') {
       el.checked = !!v;
-      const card = document.getElementById('card' + id.slice(1));
+      const card = document.getElementById((id[0] === 'm' ? 'slide' : 'card') + id.slice(1));
       if (card) card.classList.toggle('pronto', el.checked);
     } else {
       el.value = v;
@@ -382,7 +438,7 @@ document.addEventListener('input', ev => {
   if (ev.target.id[0] === 'r' && ev.target.value.trim() && f && !f.checked) { f.checked = true; marcarFeito(i); }
   salvarRascunho();
 });
-document.addEventListener('change', ev => { if (/^[crf]\d+$/.test(ev.target.id)) salvarRascunho(); });
+document.addEventListener('change', ev => { if (/^[crfm]\d+$/.test(ev.target.id)) salvarRascunho(); });
 
 // "22/10" vira "qua, 22/10 · ontem"
 function quando(dia) {
@@ -416,7 +472,7 @@ function somar(i, dir) {
 }
 
 function virar(i) {
-  const img = document.getElementById('img' + i);
+  const img = document.getElementById(typeof i === 'string' ? i : 'img' + i);
   if (!img || !/\/[01]\.jpg$/.test(img.src)) return;
   img.src = img.src.replace(/\/([01])\.jpg$/, (m, n) => '/' + (n === '0' ? '1' : '0') + '.jpg');
 }

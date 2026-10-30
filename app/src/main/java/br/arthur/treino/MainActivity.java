@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
         s.setCacheMode(WebSettings.LOAD_DEFAULT);
-        web.setBackgroundColor(0xFF15110A);
+        web.setBackgroundColor(0xFF0F172A);
         web.addJavascriptInterface(new Ponte(), "Android");
         web.setWebViewClient(new WebViewClient() {
             @Override
